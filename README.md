@@ -1,4 +1,4 @@
-# `go-lm`: Basic linear models in Go
+# `go-lm`: Linear models in Go
 
 `go-lm` provides a basic implementation of weighted least squares (WLS) regression and regression with t-distributed residuals. These are implemented using the [`cgo`][cgo] interface, with the C code directly calling standard BLAS/LAPACK functions.
 
