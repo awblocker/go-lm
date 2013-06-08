@@ -4,6 +4,7 @@ package lm
 // #cgo CFLAGS: -O2 -Wall
 // #cgo LDFLAGS: -lf77blas -llapack -latlas -lm -lgfortran
 // #include "wls.h"
+// #include "lmT.h"
 import "C"
 import "unsafe"
 
@@ -35,12 +36,10 @@ func lmT(X []float64, n int, p int, y []float64,
     nu float64, maxIter int, tol float64) (
         coef []float64, tau float64, iterations int, logLikelihood float64) {
     // Setup variables for results
-    var logLikelihood, tau float64
-    var iterations int
-    coef := make([]float64, p)
+    coef = make([]float64, p)
 
     // Call C code
-    iterations = (int) (lmT(
+    iterations = (int) (C.lmT(
         (*C.double) (unsafe.Pointer(&X[0])),
         C.int(n), C.int(p),
         (*C.double) (unsafe.Pointer(&y[0])),
@@ -53,3 +52,4 @@ func lmT(X []float64, n int, p int, y []float64,
     // Return results
     return
 }
+

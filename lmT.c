@@ -57,7 +57,7 @@ int lmT(double * X, int n, int p,
     double * tau)
 {
   // Initialize workspace variables
-  int iter, i, j;
+  int iter, i;
   double logLikelihood_tm1, delta;
 
   /*

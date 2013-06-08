@@ -1,5 +1,5 @@
 
-package wls
+package lm
 
 import "testing"
 import "fmt"
