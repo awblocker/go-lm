@@ -31,3 +31,25 @@ func Wls(X []float64, n int, p int, y []float64, w []float64) (
     return coef, (int) (status)
 }
 
+func lmT(X []float64, n int, p int, y []float64,
+    nu float64, maxIter int, tol float64) (
+        coef []float64, tau float64, iterations int, logLikelihood float64) {
+    // Setup variables for results
+    var logLikelihood, tau float64
+    var iterations int
+    coef := make([]float64, p)
+
+    // Call C code
+    iterations = (int) (lmT(
+        (*C.double) (unsafe.Pointer(&X[0])),
+        C.int(n), C.int(p),
+        (*C.double) (unsafe.Pointer(&y[0])),
+        C.double(nu),
+        C.int(maxIter), C.double(tol),
+        (*C.double) (unsafe.Pointer(&logLikelihood)),
+        (*C.double) (unsafe.Pointer(&coef[0])),
+        (*C.double) (unsafe.Pointer(&tau))))
+
+    // Return results
+    return
+}
