@@ -12,8 +12,11 @@ This package requires a [current Go installation][golang] with cgo enabled and t
 sudo apt-get install libatlas3gf-base libatlas-base-dev liblapack golang build-essential
 ```
 
+The entire package is provided under the [MIT license][mit].
+
 [cgo]: http://golang.org/cmd/cgo/
 [pxem]: http://scholar.google.com/scholar?cluster=8397446410416335201
 [atlas]: http://math-atlas.sourceforge.net/
 [lapack]: http://www.netlib.org/lapack/
 [golang]: http://www.golang.org/
+[mit]: http://opensource.org/licenses/MIT
