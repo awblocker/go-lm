@@ -8,6 +8,7 @@ import "math/rand"
 
 func TestWls(t *testing.T) {
     const n, p = 10, 2
+    methods := [...]uint8{'q', 'c'}
     // Testing with y = x
     X := make([]float64, n*p)
     y := make([]float64, n)
@@ -21,19 +22,24 @@ func TestWls(t *testing.T) {
         w[i] = 1.
     }
 
-    // Run regression
-    coef, status := Wls(X, n, p, y, w)
+    for _, method := range methods {
+        // Run regression
+        coef, status := Wls(X, n, p, y, w, method)
 
-    // Print results
-    fmt.Printf("Status: %d\n", status)
-    fmt.Printf("Beta hat: %v\n", coef)
+        // Print results
+        fmt.Printf("Status: %d\n", status)
+        fmt.Printf("Beta hat: %v\n", coef)
 
-    l2Error := math.Sqrt(math.Pow(coef[0], 2) + math.Pow(coef[1]-1, 2))
-    maxError := math.Sqrt(2)*math.Sqrt(math.Nextafter(1., 2.) - 1.)
-    if status > 0 || l2Error > maxError {
-        t.Errorf("Status %d\tL2 error %g > %g", status, l2Error, maxError)
-    } else {
-        fmt.Printf("L2 error %g < %g\n", l2Error, maxError)
+        // Check numerical accuracy
+        l2Error := math.Sqrt(math.Pow(coef[0], 2) + math.Pow(coef[1]-1, 2))
+        maxError := math.Sqrt(2)*math.Sqrt(math.Nextafter(1., 2.) - 1.)
+        if status > 0 || l2Error > maxError {
+            t.Errorf("Method %c\tStatus %d\tL2 error %g > %g",
+            method, status, l2Error, maxError)
+        } else {
+            fmt.Printf("Method %c\tL2 error %g < %g\n",
+            method, l2Error, maxError)
+        }
     }
 }
 
@@ -51,7 +57,7 @@ func TestLmT(t *testing.T) {
     }
 
     // Run regression
-    coef, tau, iterations, logLikelihood := LmT(X, n, p, y, 2., 100, 1e-8)
+    coef, tau, iterations, logLikelihood := LmT(X, n, p, y, 2., 100, 1e-8, 'q')
 
     // Print results
     fmt.Printf("Beta hat: %v\n", coef)
