@@ -4,6 +4,7 @@ package lm
 import "testing"
 import "fmt"
 import "math"
+import "math/rand"
 
 func TestWls(t *testing.T) {
     const n, p = 10, 2
@@ -34,5 +35,28 @@ func TestWls(t *testing.T) {
     } else {
         fmt.Printf("L2 error %g < %g\n", l2Error, maxError)
     }
+}
+
+func TestLmT(t *testing.T) {
+    const n, p = 100, 2
+    // Testing with y = x + e; x = 0, ..., n; e ~ t_2
+    X := make([]float64, n*p)
+    y := make([]float64, n)
+
+    // Fill X matrix and simulate y's
+    for i := 0; i < n; i++ {
+        X[i] = 1.
+        X[i + n] = (float64) (i)
+        y[i] = X[i + n] + rand.NormFloat64() / math.Sqrt(rand.ExpFloat64())
+    }
+
+    // Run regression
+    coef, tau, iterations, logLikelihood := LmT(X, n, p, y, 2., 100, 1e-8)
+
+    // Print results
+    fmt.Printf("Beta hat: %v\n", coef)
+    fmt.Printf("Tau hat: %v\n", tau)
+    fmt.Printf("Iterations: %v\n", iterations)
+    fmt.Printf("Log likelihood: %v\n", logLikelihood)
 }
 

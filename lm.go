@@ -32,7 +32,7 @@ func Wls(X []float64, n int, p int, y []float64, w []float64) (
     return coef, (int) (status)
 }
 
-func lmT(X []float64, n int, p int, y []float64,
+func LmT(X []float64, n int, p int, y []float64,
     nu float64, maxIter int, tol float64) (
         coef []float64, tau float64, iterations int, logLikelihood float64) {
     // Setup variables for results
